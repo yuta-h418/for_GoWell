@@ -25,6 +25,7 @@ class Purchasehistory extends Model
     protected $fillable = [
         'id',
         'product_name',
+        'product_kind',
         'price',
         'purchase_date',
     ];

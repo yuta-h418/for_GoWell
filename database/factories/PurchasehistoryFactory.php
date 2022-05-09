@@ -19,7 +19,8 @@ class PurchasehistoryFactory extends Factory
         
         return [
             'id' => rand(1,5),
-            'product_name' => $this->faker->randomElement(['アウター','トップス','Tシャツ'.'ボトムス','ジーンズ']),
+            'product_name' => $this->faker->randomElement(['アウター','トップス','Tシャツ','ボトムス','ジーンズ']),
+            'product_kind' => $this->faker->randomElement(['PC','家電','日用品','本','Suica']),
             'price' => $price,
             'purchase_date' => $this->faker->date(),
         ];
