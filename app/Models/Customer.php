@@ -42,7 +42,7 @@ class Customer extends Model
      * 許可カラム.
      */
     protected $fillable = [
-        'id',
+        'customer_id',
         'name',
         'tell_number',
         'birthday',

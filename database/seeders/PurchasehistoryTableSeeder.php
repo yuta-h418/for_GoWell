@@ -14,6 +14,6 @@ class PurchasehistoryTableSeeder extends Seeder
      */
     public function run()
     {
-        Purchasehistory::factory()->count(50)->create();
+        Purchasehistory::factory()->count(20)->create();
     }
 }

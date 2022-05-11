@@ -18,10 +18,11 @@ class PurchasehistoryFactory extends Factory
         $price = $this->faker->numberBetween($min=1000, $max=20000);
         
         return [
-            'id' => rand(1,5),
+            'customer_id' => rand(1,5),
             'product_name' => $this->faker->randomElement(['アウター','トップス','Tシャツ','ボトムス','ジーンズ']),
-            'product_kind' => $this->faker->randomElement(['PC','家電','日用品','本','Suica']),
+            'product_kind' => $this->faker->randomElement(['1','2','3','4','5','6']),
             'price' => $price,
+            'cash_kind' => $this->faker->randomElement(['1','2','3','4','5','6']),
             'purchase_date' => $this->faker->date(),
         ];
     }

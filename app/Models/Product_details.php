@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Purchasehistory extends Model
+class Product_details extends Model
 {
     use HasFactory;
 
@@ -23,12 +23,8 @@ class Purchasehistory extends Model
      * 許可カラム.
      */
     protected $fillable = [
-        'id',
-        'product_name',
+        'product_no',
         'product_kind',
-        'price',
-        'cash_kind',
-        'purchase_date',
     ];
 
 }
