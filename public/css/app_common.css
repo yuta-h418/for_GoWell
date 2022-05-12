@@ -52,3 +52,45 @@ body {
     height: 100vh;
     padding:0 15px;
 }
+
+#purchase_table{
+    border-collapse:collapse;
+    text-align: left;
+}
+
+#purchase_table td{
+    padding: 20px 50px 20px 20px;
+    border-spacing: 0;
+    border-bottom: 1.5px solid #BBBBBB;
+}
+
+#header{
+    text-align: center;
+}
+
+.right{
+    text-align: right;
+}
+
+.category{
+    /* padding: 10px 0 ;
+    background-color: chartreuse;
+    border-radius: 10px;
+    line-height: 10px; */
+    text-align: center;
+}
+
+.ediBtn{
+    color:#0000FF;
+    text-decoration:underline;
+    padding-right: 10px;
+}
+
+.delBtn{
+    color:#ff0037;
+    text-decoration:underline;
+}
+
+.center{
+    text-align: center;
+}

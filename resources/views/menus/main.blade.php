@@ -13,9 +13,9 @@
                 </a>
             </li>
             <li>
-                <a name="#" style="cursor:pointer;" onclick="location.href='/'">
+                <a name="#" style="cursor:pointer;" onclick="location.href='/purchase_history'">
                 <img src="{{ asset('../img/basket.svg') }}" alt="basket">
-                今月の購入履歴
+                購入履歴
                 </a>
             </li>
             <li>
@@ -43,6 +43,13 @@
                 </a>
             </li>
         </ul>
+
+        <p>
+            today:
+            <span style="text-decoration:underline;">
+               {{ \Carbon\Carbon::now()->format("Y/m/d") }} 
+            </span>
+        </p>
 
     </div>
 </div>

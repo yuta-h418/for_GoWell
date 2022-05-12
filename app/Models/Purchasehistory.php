@@ -9,6 +9,8 @@ class Purchasehistory extends Model
 {
     use HasFactory;
 
+    protected $table = 'purchasehistories';
+
     /**
      * データ登録日.
      */
@@ -23,7 +25,7 @@ class Purchasehistory extends Model
      * 許可カラム.
      */
     protected $fillable = [
-        'id',
+        'customer_id',
         'product_name',
         'product_kind',
         'price',

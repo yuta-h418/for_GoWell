@@ -20,3 +20,5 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', 'App\Http\Controllers\TopController@topview');
 
 Route::get('/form', 'App\Http\Controllers\PurchaseFormController@formView')->name('register_form');
+
+Route::get('/purchase_history', 'App\Http\Controllers\PurchaseHistoryController@historyView')->name('history');
