@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     @stack('head')
-    <link rel="stylesheet" href="{{ asset('/css/admin_common_style.css?20220407') }}" type="text/css">
+    <link rel="stylesheet" href="{{ asset('/css/app_common.css?20220407') }}" type="text/css">
     @stack('style')
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script>

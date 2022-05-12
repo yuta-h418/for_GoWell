@@ -1,34 +1,48 @@
-<div id="mainContent">
+<div id="menuContent">
     <div id="menu_core">
-        <ul>
+
+        <p>こんにちは！</p>
+
+        <h1>Purchase history</h1>
+
+        <ul id="menu_list">
             <li>
-                <a name="#" style="cursor:pointer;">
+                <a name="#" style="cursor:pointer;" onclick="location.href='/'">
+                <img src="{{ asset('../img/home.svg') }}" alt="home">
+                Topへ戻る
                 </a>
             </li>
             <li>
-                <a name="#" style="cursor:pointer;">
+                <a name="#" style="cursor:pointer;" onclick="location.href='/'">
+                <img src="{{ asset('../img/basket.svg') }}" alt="basket">
+                今月の購入履歴
                 </a>
             </li>
             <li>
-                <a name="#" style="cursor:pointer;">
+                <a name="#" style="cursor:pointer;" onclick="location.href='/'">
+                <img src="{{ asset('../img/search.svg') }}" alt="search">
+                購入履歴検索
                 </a>
             </li>
             <li>
-                <a name="#" style="cursor:pointer;">
+                <a name="#" style="cursor:pointer;" onclick="location.href='/form'">
+                <img src="{{ asset('../img/register.svg') }}" alt="register">
+                購入内容登録
                 </a>
             </li>
             <li>
-                <a name="#" style="cursor:pointer;">
+                <a name="#" style="cursor:pointer;" onclick="location.href='/'">
+                <img src="{{ asset('../img/upload.svg') }}" alt="upload">
+                購入内容アップロード
                 </a>
             </li>
             <li>
-                <a name="#" style="cursor:pointer;">
-                </a>
-            </li>
-            <li>
-                <a name="#" style="cursor:pointer;">
+                <a name="#" style="cursor:pointer;" onclick="location.href='/'">
+                <img src="{{ asset('../img/logout.svg') }}" alt="upload">
+                ログアウト
                 </a>
             </li>
         </ul>
+
     </div>
 </div>

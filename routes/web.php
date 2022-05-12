@@ -13,6 +13,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+// Route::get('/', function () {
+//     return view('welcome');
+// });
+
+Route::get('/', 'App\Http\Controllers\TopController@topview');
+
+Route::get('/form', 'App\Http\Controllers\PurchaseFormController@formView')->name('register_form');
