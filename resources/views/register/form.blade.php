@@ -98,10 +98,16 @@
     </div>
     <div class="registBtn">
 
-        <button href="" class="">確認</button>
+        <button type="submit" class="">確認</button>
         <button href="" class="">リセット</button>
 
     </div>
     
 </div>
 @endsection
+
+<!-- TODO -->
+<!-- 
+バリデーション
+ボタンCSS
+-->
