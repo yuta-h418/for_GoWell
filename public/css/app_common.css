@@ -94,3 +94,59 @@ body {
 .center{
     text-align: center;
 }
+
+
+#formContent{
+    width: 50vw;
+    height: 50vw;
+    /* border: 1.5px solid #BBBBBB; */
+    margin:60px auto;
+    max-width:600px;
+    max-height:450px;
+    min-width:400px;
+    min-height:500px;
+}
+
+/* .borderTop{
+    border-top: 1.5px solid #BBBBBB;
+} */
+
+#register_table{
+    margin:20px auto;
+    border-collapse:collapse;
+}
+
+#register_table td{
+    padding: 30px 50px 30px 20px;
+    border-spacing: 0;
+    border-bottom: 1.5px solid #BBBBBB;
+}
+
+/* #register_table tr{
+    border-spacing: 0;
+    border-bottom: solid #BBBBBB 5px ;
+} */
+
+.registBtn{
+    /* margin-top:-30vw; */
+    text-align: center;
+}
+
+.mustCheck{
+    font-weight: bold;
+    color: #EEEEEE;
+    padding: 5px 12px;
+    background-color: #FF6633;
+    border-radius: 8px;
+}
+
+.bold{
+    font-weight: bold;
+}
+
+.formText{
+    width:150px;
+    height:25px;
+    font-size:18px;
+    background-color: #EEEEEE;
+}
