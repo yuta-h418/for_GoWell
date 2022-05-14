@@ -12,6 +12,7 @@
     <div id="formContent">
 
         <form action="" method="POST" id="registerForm">
+            {{ csrf_field() }}
             <table id="register_table">
                 <tbody>
                     
@@ -41,7 +42,7 @@
                             <span class="bold">カテゴリー</span>
                         </td>
                         <td>
-                           {{ $registRow['product_kind_name'] }}
+                           {{ $product_kind_name }}
                            <input type="hidden" name="product_kind" value="{{ $registRow['product_kind'] }}" class="formText">
                         </td>
                     </tr>
@@ -61,7 +62,7 @@
                            <span class="bold">支払方法</span>
                         </td>
                         <td>
-                            {{ $registRow['cash_kind_name'] }}
+                            {{ $cash_kind_name }}
                             <input type="hidden" name="cash_kind" value="{{ $registRow['cash_kind'] }}" class="formText">
                         </td>
                     </tr>
@@ -69,16 +70,17 @@
                 </tbody>
             </table>
 
+            <div class="registBtn">
+
+                <button type="submit" class="">登録</button>
+                <button href="button" class="">キャンセル</button>
+        
+            </div>
             
         </form>
         
     </div>
-    <div class="registBtn">
-
-        <button type="submit" class="">確認</button>
-        <button href="" class="">リセット</button>
-
-    </div>
+    
     
 </div>
 @endsection

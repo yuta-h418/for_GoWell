@@ -11,7 +11,9 @@
 
     <div id="formContent">
 
-        <form action="" method="POST" id="registerForm">
+        <form action="/regist/conf" method="POST" id="registerForm">
+            {{ csrf_field() }}
+            
             <table id="register_table">
                 <tbody>
                     
@@ -92,15 +94,15 @@
                 </tbody>
             </table>
 
+            <div class="registBtn">
+        
+                <button type="submit" class="">確認</button>
+                <button type="reset" class="">リセット</button>
+        
+            </div>
             
         </form>
         
-    </div>
-    <div class="registBtn">
-
-        <button type="submit" class="">確認</button>
-        <button href="" class="">リセット</button>
-
     </div>
     
 </div>

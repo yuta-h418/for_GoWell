@@ -19,6 +19,13 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', 'App\Http\Controllers\TopController@topview');
 
+//購入履歴登録
+//form
 Route::get('/form', 'App\Http\Controllers\PurchaseFormController@formView')->name('register_form');
+//conf
+Route::get('/regist/conf', 'App\Http\Controllers\PurchaseFormController@registConf')->name('register_conf');
+Route::post('/regist/conf', 'App\Http\Controllers\PurchaseFormController@registConf')->name('register_conf');
+//regist
+
 
 Route::get('/purchase_history', 'App\Http\Controllers\PurchaseHistoryController@historyView')->name('history');
