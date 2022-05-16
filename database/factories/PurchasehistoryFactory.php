@@ -13,11 +13,17 @@ class PurchasehistoryFactory extends Factory
      *
      * @return array
      */
+
+    private $number = 0;
+
     public function definition()
     {
         $price = $this->faker->numberBetween($min=1000, $max=20000);
         
+        $this->number++;
+        
         return [
+            'purchase_no' => $this->number,
             'customer_id' => rand(1,5),
             'product_name' => $this->faker->randomElement(['アウター','トップス','Tシャツ','ボトムス','ジーンズ']),
             'product_kind' => $this->faker->randomElement(['1','2','3','4','5','6']),

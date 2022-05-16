@@ -11,6 +11,8 @@ class Purchasehistory extends Model
 
     protected $table = 'purchasehistories';
 
+    protected $guarded = array('purchase_no');
+
     /**
      * データ登録日.
      */
@@ -25,6 +27,7 @@ class Purchasehistory extends Model
      * 許可カラム.
      */
     protected $fillable = [
+        'purchase_no',
         'customer_id',
         'product_name',
         'product_kind',
