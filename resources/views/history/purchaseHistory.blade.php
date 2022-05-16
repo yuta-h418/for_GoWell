@@ -22,13 +22,61 @@
                 
                 @foreach($purchasehistory as $row)
                 <tr>
-                    <td>{{ $row->purchase_date }}</td>
-                    <td>{{ $row->product_name }}</td>
-                    <td class="category">{{ $row->product_kind }}</td>
-                    <td class="right">{{ number_format($row->price) }} 円</td>
-                    <td class="category">{{ $row->cash_kind }}</td>
-                    <td>{{ $row->purchase_date }}</td>
+                    <td>
+                        {{ $row->purchase_date }}
+                    </td>
+                    
+                    <td>
+                        {{ $row->product_name }}
+                    </td>
+                    
+                    <td class="category">
+                        <span class="proKind">
+                            {{ $row->product_kind }}
+                        </span>
+                    </td>
+                    
+                    <td class="right">
+                        {{ number_format($row->price) }} 円
+                    </td>
+
+                    <td class="category">
+                        @if($row->cash_no == 1)
+                            <span class="cashNo_1">
+                              {{ $row->cash_kind }}
+                            </span>
+                        @elseif($row->cash_no == 2)
+                            <span class="cashNo_2">
+                                {{ $row->cash_kind }}
+                            </span>
+                        @elseif($row->cash_no == 3)
+                            <span class="cashNo_3">
+                                {{ $row->cash_kind }}
+                            </span>
+                        @elseif($row->cash_no == 4)
+                            <span class="cashNo_4">
+                                {{ $row->cash_kind }}
+                            </span>
+                        @elseif($row->cash_no == 5)
+                            <span class="cashNo_5">
+                                {{ $row->cash_kind }}
+                            </span>
+                        @elseif($row->cash_no == 6)
+                            <span class="cashNo_6">
+                                {{ $row->cash_kind }}
+                            </span>
+                        @elseif($row->cash_no == 7)
+                            <span class="cashNo_7">
+                                {{ $row->cash_kind }}
+                            </span>
+                        @endif
+                    </td>
+                    
+                    <td>
+                        {{ $row->purchase_date }}
+                    </td>
                     <!-- <td>{{\Carbon\Carbon::now()->format("Y/m/d")}}->diffInMonths({{ $row->purchase_date }})</td> -->
+                    
                     <td class="center">
                         <a href="" class="ediBtn">Edit</a>
                         <a href="" class="delBtn">Delete</a>
@@ -47,7 +95,7 @@
 <!-- TODO -->
 <!-- 
 経過日数
-支払方法/カテゴリー背景色
 ペジネーション
-今月/先月btn 
+今月/先月btn
+btnデザイン
 -->

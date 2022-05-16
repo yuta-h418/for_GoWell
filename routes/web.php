@@ -26,6 +26,8 @@ Route::get('/form', 'App\Http\Controllers\PurchaseFormController@formView')->nam
 Route::get('/regist/conf', 'App\Http\Controllers\PurchaseFormController@registConf')->name('register_conf');
 Route::post('/regist/conf', 'App\Http\Controllers\PurchaseFormController@registConf')->name('register_conf');
 //regist
+Route::get('/regist/last', 'App\Http\Controllers\PurchaseFormController@regist')->name('register_last');
+Route::post('/regist/last', 'App\Http\Controllers\PurchaseFormController@regist')->name('register_last');
 
 
 Route::get('/purchase_history', 'App\Http\Controllers\PurchaseHistoryController@historyView')->name('history');

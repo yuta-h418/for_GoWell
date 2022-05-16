@@ -11,7 +11,7 @@
 
     <div id="formContent">
 
-        <form action="" method="POST" id="registerForm">
+        <form action="/regist/last" method="POST" id="registerForm">
             {{ csrf_field() }}
             <table id="register_table">
                 <tbody>
@@ -53,7 +53,7 @@
                         </td>
                         <td>
                             {{ $registRow['price'] }}
-                            <input type="hidden" name="price" value="{{ $registRow['purchase_date'] }}" class="formText">
+                            <input type="hidden" name="price" value="{{ $registRow['price'] }}" class="formText">
                         </td>
                     </tr>
     
