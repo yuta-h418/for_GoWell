@@ -11,7 +11,7 @@ class Purchasehistory extends Model
 
     protected $table = 'purchasehistories';
 
-    protected $guarded = array('purchase_no');
+    // public $incrementing = true;
 
     /**
      * データ登録日.

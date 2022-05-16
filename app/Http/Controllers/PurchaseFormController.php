@@ -45,6 +45,7 @@ class PurchaseFormController extends Controller
     public function regist(Request $request){
 
         $puHis = new Purchasehistory;
+        $puHis->purchase_no = Purchasehistory::max('purchase_no') + 1;
         $puHis->customer_id = 1;
         $puHis->purchase_date = $request->purchase_date;
         $puHis->product_name = $request->product_name;
