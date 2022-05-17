@@ -12,6 +12,14 @@
            return false;
         }
       }
+
+      function editconf(){
+        if(window.confirm('購入履歴を編集しますか？')){
+           return true;
+        }else{
+           return false;
+        }
+      }
   </script>
 @endpush
 
@@ -120,8 +128,10 @@
 
                     <h1>購入履歴編集</h1>
 
-                    <form action="/regist/edit" method="POST" id="registerForm">
+                    <form action="/purchase_history/edit" method="POST" id="registerForm">
                         {{ csrf_field() }}
+
+                        <input type="hidden" name="purchase_no" value="{{ $editItems->purchase_no }}">
                         
                         <table id="register_table">
                             <tbody>
@@ -187,7 +197,7 @@
             
                         <div class="registBtn">
                     
-                            <button type="submit" class="jmodal-button">登録</button>
+                            <button type="submit" class="jmodal-button" onclick="return editconf()">登録</button>
                             <button type="button" class="jmodal-button">
                                 <a href="#!" class="a-button">閉じる</a>
                             </button>

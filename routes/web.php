@@ -29,5 +29,8 @@ Route::post('/regist/conf', 'App\Http\Controllers\PurchaseFormController@registC
 Route::get('/regist/last', 'App\Http\Controllers\PurchaseFormController@regist')->name('register_last');
 Route::post('/regist/last', 'App\Http\Controllers\PurchaseFormController@regist')->name('register_last');
 
-
+//購入履歴一覧
 Route::get('/purchase_history', 'App\Http\Controllers\PurchaseHistoryController@historyView')->name('history');
+//編集
+Route::post('/purchase_history/edit', 'App\Http\Controllers\PurchaseHistoryController@historyEdit')->name('history_edit');
+
