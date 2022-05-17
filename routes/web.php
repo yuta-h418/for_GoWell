@@ -33,4 +33,6 @@ Route::post('/regist/last', 'App\Http\Controllers\PurchaseFormController@regist'
 Route::get('/purchase_history', 'App\Http\Controllers\PurchaseHistoryController@historyView')->name('history');
 //編集
 Route::post('/purchase_history/edit', 'App\Http\Controllers\PurchaseHistoryController@historyEdit')->name('history_edit');
+//削除
+Route::post('/purchase_history/delete', 'App\Http\Controllers\PurchaseHistoryController@historyDelete')->name('history_delete');
 

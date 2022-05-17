@@ -71,10 +71,12 @@
             </table>
 
             <div class="registBtn">
+                    
+                <button type="submit" class="jmodal-button">登録</button>
+                <button type="button" class="jmodal-button">
+                    <a href="javascript:history.back()" class="a-button">戻る</a>
+                </button>
 
-                <button type="submit" class="">登録</button>
-                <button href="button" class="">キャンセル</button>
-        
             </div>
             
         </form>
@@ -88,5 +90,4 @@
 <!-- TODO -->
 <!-- 
 バリデーション
-ボタンCSS
 -->

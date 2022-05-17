@@ -119,15 +119,36 @@ body {
     border-radius: 12px;
 }
 
-.ediBtn{
-    color:#0000FF;
-    text-decoration:underline;
-    padding-right: 10px;
+#ediBtn{
+    text-decoration:none!important;
+    /* color:#0000FF;
+    padding-right: 10px; */
 }
 
-.delBtn{
+/* .delBtn{
     color:#ff0037;
     text-decoration:underline;
+} */
+
+.operation_btn{
+    display:flex;
+}
+
+.EdiDelBtn,
+.EdiDelBtn:hover {
+    width: 7vh;
+    height: 3vh;
+    margin: 10px;
+    padding: 2pt 5pt;
+    background-color: #5195d3;
+    color: white;
+    font-weight: bold;
+    font-size: 15px;
+    cursor: pointer;
+    border-radius: 4pt;
+    box-shadow: none;
+    border: none;
+    text-decoration: none;
 }
 
 .center{

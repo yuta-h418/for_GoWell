@@ -99,11 +99,19 @@
                             <!-- <td>{{ \Carbon\Carbon::now()->format('Y/m/d') }}->diffInMonths({{ $row->purchase_date }})</td> -->
 
                             <td class="center">
-                                <form action="/delete" method="POST" name="Delform">
+                                <form action="/purchase_history/delete" method="POST" name="Delform" class="operation_btn">
                                     {{ csrf_field() }}
-                                    <a href="#modal-edit-{{ $row->purchase_no }}" class="ediBtn">Edit</a>
-                                    <a href="javascript:Delform.submit()" class="delBtn" onclick="return delconf()">Delete</a>
+
                                     <input type="hidden" name="del_no" value="{{ $row->purchase_no }}">
+                                    
+                                    <button type="button" class="EdiDelBtn">
+                                        <a href="#modal-edit-{{ $row->purchase_no }}" class="a-button">Edit</a>
+                                    </button>
+
+                                    <button type="submit" class="EdiDelBtn" onclick="return delconf()">
+                                        <a>Delete</a>
+                                    </button>
+
                                 </form>
                             </td>
                         </tr>
@@ -219,5 +227,4 @@
 経過日数
 ペジネーション
 今月/先月btn
-btnデザイン
 -->

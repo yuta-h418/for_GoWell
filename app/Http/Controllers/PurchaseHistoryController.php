@@ -37,7 +37,7 @@ class PurchaseHistoryController extends Controller
     public function historyEdit(Request $request){
 
         $editAll = $request->all();
-        Log::debug(__LINE__ . " editAll " . print_r($editAll, true));
+        // Log::debug(__LINE__ . " editAll " . print_r($editAll, true));
 
         $editDetail = [
             'purchase_date' => $request->purchase_date,
@@ -49,6 +49,31 @@ class PurchaseHistoryController extends Controller
 
         Purchasehistory::where('purchase_no',$request->purchase_no)
         ->update($editDetail);
+
+        $purchasehistory = DB::table('purchasehistories')
+        ->leftJoin('product_details','product_details.product_no', '=', 'purchasehistories.product_kind')
+        ->leftJoin('cash_details','cash_details.cash_no', '=', 'purchasehistories.cash_kind')
+        ->where('customer_id',1)
+        ->orderby('purchase_date','desc')
+        ->get();
+        
+        $productDetails = DB::table('product_details')->get();
+        $cashDetails = DB::table('cash_details')->get();
+
+        return view('history.purchaseHistory')->with([
+            "purchasehistory" => $purchasehistory,
+            "productDetails" => $productDetails,
+            "cashDetails" => $cashDetails,
+        ]);
+    }
+
+    public function historyDelete(Request $request){
+
+        $editAll = $request->all();
+        // Log::debug(__LINE__ . " editAll " . print_r($editAll, true));
+
+        Purchasehistory::where('purchase_no',$request->del_no)
+        ->delete();
 
         $purchasehistory = DB::table('purchasehistories')
         ->leftJoin('product_details','product_details.product_no', '=', 'purchasehistories.product_kind')
