@@ -21,14 +21,16 @@ class PurchaseHistoryController extends Controller
         ->get();
         
         // $purchasehistory = Purchasehistory::where('customer_id', '=', 1)->get();
-        // $productDetails = DB::table('product_details')->get();
-        // $cashDetails = DB::table('cash_details')->get();
+        $productDetails = DB::table('product_details')->get();
+        $cashDetails = DB::table('cash_details')->get();
 
         Log::debug(__LINE__ . " hisory " . print_r($purchasehistory, true));
 
 
         return view('history.purchaseHistory')->with([
             "purchasehistory" => $purchasehistory,
+            "productDetails" => $productDetails,
+            "cashDetails" => $cashDetails,
         ]);
     }
 }

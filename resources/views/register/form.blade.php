@@ -96,8 +96,8 @@
 
             <div class="registBtn">
         
-                <button type="submit" class="">確認</button>
-                <button type="reset" class="">リセット</button>
+                <button type="submit" class="regist_btn">確認</button>
+                <button type="reset" class="reset_btn">リセット</button>
         
             </div>
             

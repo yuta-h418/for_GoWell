@@ -168,6 +168,8 @@ body {
 }
 
 .mustCheck{
+    /* width:9vh;
+    height:4vh; */
     font-weight: bold;
     color: #EEEEEE;
     padding: 5px 12px;
@@ -186,3 +188,120 @@ body {
     background-color: #EEEEEE;
 }
 
+
+/* モーダル */
+
+.modal-wrapper {
+    background: rgba(0, 0, 0, 0.8) !important;
+    bottom: 0;
+    left: 0;
+    padding: 40.0px 10.0px;
+    position: fixed;
+    right: 0;
+    text-align: center;
+    top: 0;
+    z-index: 998;
+}
+
+.modal-wrapper:not(:target) {
+    opacity: 0.0;
+    transition: opacity 0.3s, visibility 0.3s;
+    visibility: hidden;
+}
+
+.modal-wrapper:target {
+    opacity: 1;
+    visibility: visible;
+    transition: opacity 0.4s, visibility 0.4s;
+}
+
+.modal-wrapper::after {
+    content: "";
+    display: inline-block;
+    height: 100.0%;
+    margin-left: -0.05em;
+    vertical-align: middle;
+}
+
+.modal-wrapper .modal-window {
+    background: rgb(255, 255, 255) !important;
+    border-radius: 2.0px;
+    box-shadow: 0 0 30.0px rgba(0, 0, 0, 0.6);
+    box-sizing: border-box;
+    display: inline-block;
+    max-width: 600.0px;
+    padding: 30.0px 30.0px 15.0px;
+    vertical-align: middle;
+    width: 70.0%;
+    z-index: 999;
+    overflow-y: auto;
+}
+
+.modal-wrapper .modal-window .modal-content {
+    max-height: 80.0vh;
+    text-align: left;
+}
+
+/* .modal-content {
+    z-index: 999;
+} */
+
+.modal-content h3 {
+    width: 100.0% !important;
+}
+
+/* .modal-overlay {
+    background: rgba(0, 0, 0, 0.8) !important;
+    bottom: 0;
+    left: 0;
+    position: fixed;
+    right: 0;
+    top: 0;
+    z-index: 10;
+} */
+
+.modal-wrapper .modal-close {
+    color: rgb(149, 151, 156) !important;
+    font-size: 20.0px;
+    font-weight: 700;
+    line-height: 35.0px;
+    position: absolute;
+    right: 0;
+    text-align: center;
+    text-decoration: none;
+    text-indent: 0;
+    top: 0;
+    width: 35.0px;
+    z-index: 20;
+}
+
+.modal-wrapper .modal-close:hover {
+    color: rgb(43, 46, 56) !important;
+}
+
+.jmodal-button,
+.jmodal-button:hover,
+.regist_btn,
+.regist_btn:hover,
+.reset_btn,
+.reset_btn:hover {
+    width:9vh;
+    height:4vh;
+    margin:10px;
+    padding: 7pt 12pt;
+    background-color: #5195d3;
+    color: white;
+    font-weight: bold;
+    font-size: 15px;
+    cursor: pointer;
+    border-radius: 4pt;
+    box-shadow: none;
+    border: none;
+    text-decoration: none;
+}
+
+.a-button{
+    text-decoration: none;
+    color:#EEEEEE;
+    font-weight: bold;
+}
