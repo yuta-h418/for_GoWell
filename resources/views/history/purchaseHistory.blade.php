@@ -37,7 +37,7 @@
                         <td>カテゴリー</td>
                         <td>値段</td>
                         <td>支払方法</td>
-                        <td>経過日数</td>
+                        {{-- <td>経過日数</td> --}}
                         <td>操作</td>
                     </tr>
 
@@ -93,9 +93,9 @@
                                 @endif
                             </td>
 
-                            <td>
+                            {{-- <td>
                                 {{ $row->purchase_date }}
-                            </td>
+                            </td> --}}
                             <!-- <td>{{ \Carbon\Carbon::now()->format('Y/m/d') }}->diffInMonths({{ $row->purchase_date }})</td> -->
 
                             <td class="center">

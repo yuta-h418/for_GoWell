@@ -19,8 +19,9 @@
 
         <form enctype="multipart/form-data" method="POST" action="/upload/conf" name="csv_file" id="customselect">
             {{ csrf_field() }}
+            @csrf
 
-            <input type="file" name="purchase_csvFile">
+            <input type="file" name="purchase_csvFile" class="fileinput" required>
 
             <div class="uploadBtn">
         

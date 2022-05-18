@@ -26,7 +26,7 @@
                            <span class="bold">購入日</span>
                         </td>
                         <td>
-                            <input type="date" name="purchase_date" class="formText" require>
+                            <input type="date" name="purchase_date" class="formText" required>
                         </td>
                     </tr>
     
@@ -38,7 +38,7 @@
                             <span class="bold">製品名</span>
                         </td>
                         <td>
-                            <input type="text" name="product_name" class="formText" require>
+                            <input type="text" name="product_name" class="formText" required>
                         </td>
                     </tr>
     
@@ -51,7 +51,7 @@
                         </td>
                         <td>
                             
-                            <select type="text" name="product_kind" class="formText" require>
+                            <select type="text" name="product_kind" class="formText" required>
                                 <option>選択して下さい</option>
                                 @foreach($productDetails as $pd)
                                     <option value="{{ $pd->product_no }}">{{ $pd->product_kind }}</option>
@@ -69,7 +69,7 @@
                            <span class="bold">値段</span>
                         </td>
                         <td>
-                            <input type="number" min="0" name="price" class="formText" require>
+                            <input type="number" min="0" name="price" class="formText" required>
                         </td>
                     </tr>
     
@@ -81,7 +81,7 @@
                            <span class="bold">支払方法</span>
                         </td>
                         <td>
-                            <select type="text" name="cash_kind" class="formText" require>
+                            <select type="text" name="cash_kind" class="formText" required>
                                 <option>選択して下さい</option>
                                 @foreach($cashDetails as $cd)
                                     <option value="{{ $cd->cash_no }}">{{ $cd->cash_kind }}</option>

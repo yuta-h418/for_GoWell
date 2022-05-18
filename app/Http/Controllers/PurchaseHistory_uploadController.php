@@ -52,13 +52,23 @@ class PurchaseHistory_uploadController extends Controller
 
             $file = explode(",", $row[0]);
 
+            $product_no = DB::table('product_details')
+            ->where('product_kind',$file[2])
+            ->value('product_no');
+
+            $cashNo = DB::table('cash_details')
+            ->where('cash_kind',$file[4])
+            ->value('cash_no');
+
             //データまとめ
             $reqRows[] = [
                 'purchase_date' => $file[0],
                 'product_name' => $file[1],
                 'product_kind' => $file[2],
+                'product_no' => $product_no,
                 'price' => $file[3],
                 'cash_kind' => $file[4],
+                'cash_no' => $cashNo,
             ];
 
 
@@ -67,15 +77,61 @@ class PurchaseHistory_uploadController extends Controller
         //ヘッダー削除
         array_splice($reqRows, 0, 1);
 
-        Log::debug(__LINE__ . " requestRow " . print_r($reqRows, true));
+        // Log::debug(__LINE__ . " requestRow " . print_r($reqRows, true));
+        
+        // Log::debug(__LINE__ . " index " . print_r($index, true));
+
+
 
         //JSONへ変換
         $reqAllRows = json_encode($reqRows);
 
 
-        // return view('register.upload_conf')->with([
-        //     "reqRows" => $reqRows,
-        // ]);
+        return view('register.upload_conf')->with([
+            "reqRows" => $reqRows,
+            "reqAllRows" => $reqAllRows,
+            "index" => $index,
+        ]);
+
+    }
+
+    public function uploadRegist(Request $request){
+
+        $reqall = json_decode($request->csvJson);
+
+        //TODO : 分割して挿入
+
+        $uploadReq = [];
+
+        foreach($reqall as $key => $row){
+
+            $purchase_no = Purchasehistory::max('purchase_no') + $key + 1;
+            $purchase_date = $row->purchase_date;
+            $product_name = $row->product_name;
+            $product_kind = $row->product_no;
+            $price = $row->price;
+            $cash_kind = $row->cash_no;
+            $customer_id = 1;
+
+            $uploadList = [
+                "purchase_no" => "$purchase_no",
+                "purchase_date" => "$purchase_date",
+                "product_name" => "$product_name",
+                "product_kind" => "$product_kind",
+                "price" => "$price",
+                "cash_kind" => "$cash_kind",
+                "customer_id" => "$customer_id",
+            ];
+
+            array_push($uploadReq,$uploadList);
+
+        }
+
+        // Log::debug(__LINE__ . " uploadReq " . print_r($uploadReq, true));
+
+        Purchasehistory::insert($uploadReq);
+
+        return view('register.upload_last');
 
     }
 }
