@@ -36,3 +36,8 @@ Route::post('/purchase_history/edit', 'App\Http\Controllers\PurchaseHistoryContr
 //削除
 Route::post('/purchase_history/delete', 'App\Http\Controllers\PurchaseHistoryController@historyDelete')->name('history_delete');
 
+// 購入履歴CSVアップロード
+Route::get('/upload/form', 'App\Http\Controllers\PurchaseHistory_uploadController@uploadformView')->name('upload_form');
+// 確認
+Route::get('/upload/conf', 'App\Http\Controllers\PurchaseHistory_uploadController@uploadConf')->name('upload_conf');
+Route::post('/upload/conf', 'App\Http\Controllers\PurchaseHistory_uploadController@uploadConf')->name('upload_conf');

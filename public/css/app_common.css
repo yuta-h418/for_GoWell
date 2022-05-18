@@ -188,6 +188,10 @@ body {
     text-align: center;
 }
 
+.uploadBtn{
+    margin-top:30px;
+}
+
 .mustCheck{
     /* width:9vh;
     height:4vh; */

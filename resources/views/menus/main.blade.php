@@ -31,7 +31,7 @@
                 </a>
             </li>
             <li>
-                <a name="#" style="cursor:pointer;" onclick="location.href='/'">
+                <a name="#" style="cursor:pointer;" onclick="location.href='/upload/form'">
                 <img src="{{ asset('../img/upload.svg') }}" alt="upload">
                 <span class="bold">購入内容アップロード</span>
                 </a>
