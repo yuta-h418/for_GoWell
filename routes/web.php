@@ -44,3 +44,6 @@ Route::post('/upload/conf', 'App\Http\Controllers\PurchaseHistory_uploadControll
 Route::get('/upload/conf', 'App\Http\Controllers\PurchaseHistory_uploadController@uploadConf')->name('upload_conf');
 //登録
 Route::post('/upload/last', 'App\Http\Controllers\PurchaseHistory_uploadController@uploadRegist')->name('upload_uploadRegist');
+
+//検索
+Route::get('/search/form', 'App\Http\Controllers\SearchFormController@searchForm')->name('search_form');

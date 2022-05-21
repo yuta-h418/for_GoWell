@@ -19,7 +19,7 @@
                 </a>
             </li>
             <li>
-                <a name="#" style="cursor:pointer;" onclick="location.href='/'">
+                <a name="#" style="cursor:pointer;" onclick="location.href='/search/form'">
                 <img src="{{ asset('../img/search.svg') }}" alt="search">
                 <span class="bold">購入履歴検索</span>
                 </a>
