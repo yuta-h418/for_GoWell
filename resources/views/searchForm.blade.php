@@ -59,6 +59,45 @@
                     </tr>
 
                     <tr id="" style="">
+                        <td class="itemName">購入年月</td>
+                        <td class="">
+                            年：
+                            <select type="text" name="purcYear" class="formText">
+                                <option>選択して下さい</option>
+                                <option value="2018">2018</option>
+                                <option value="2019">2019</option>
+                                <option value="2020">2020</option>
+                                <option value="2021">2021</option>
+                                <option value="2022">2022</option>
+                                <option value="2023">2023</option>
+                                <option value="2024">2024</option>
+                                <option value="2025">2025</option>
+                                <option value="2026">2026</option>
+                                <option value="2027">2027</option>
+                                <option value="2028">2028</option>
+                            </select>
+
+                            <span style="margin-left:30px;">月：</span>
+                            <select type="text" name="purcMonth" class="formText">
+                                <option>選択して下さい</option>
+                                <option value="1">1月</option>
+                                <option value="2">2月</option>
+                                <option value="3">3月</option>
+                                <option value="4">4月</option>
+                                <option value="5">5月</option>
+                                <option value="6">6月</option>
+                                <option value="7">7月</option>
+                                <option value="8">8月</option>
+                                <option value="9">9月</option>
+                                <option value="10">10月</option>
+                                <option value="11">11月</option>
+                                <option value="12">12月</option>
+                            </select>
+ 
+                        </td>
+                    </tr>
+
+                    <tr id="" style="">
                         <td class="itemName">製品名</td>
                         <td class="">
                           <input class="formText" type="text" name="product_name" value="">  を含む
