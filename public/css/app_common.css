@@ -339,3 +339,31 @@ body {
     margin: 20px;
     font-size:16px;
 }
+
+
+
+/* 検索 */
+#search_table{
+    margin:20px auto;
+    border-collapse:collapse;
+    border: 1px solid #333;
+}
+
+#search_table tr,
+#search_table td{
+    padding: 30px 50px 30px 20px;
+    border-spacing: 0;
+    border-bottom: 1px solid #333;
+}
+
+.itemName{
+    font-weight: bold;
+    border-right: 1px solid #333;
+    background-color: #EEEEEE;
+}
+
+#checkSelect label {
+    /* display: block;
+    float: left; */
+    width: 120px;
+}

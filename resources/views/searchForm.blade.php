@@ -4,23 +4,33 @@
 
 
 @push('script')
-  {{-- <script>
-      function delconf(){
-        if(window.confirm('購入履歴を削除しますか？')){
-           return true;
-        }else{
-           return false;
-        }
+  <script>
+    function proAllselect() {
+      var proName = document.getElementsByName("product_no[]");
+      for(i=0;i<proName.length;i++) {
+        proName[i].checked = true;
       }
+    }
+    function proAlllift() {
+      var proName = document.getElementsByName("product_no[]");
+      for(i=0;i<proName.length;i++) {
+        proName[i].checked = false;
+      }
+    }
 
-      function editconf(){
-        if(window.confirm('購入履歴を編集しますか？')){
-           return true;
-        }else{
-           return false;
-        }
+    function cashAllselect() {
+      var cashName = document.getElementsByName("cash_no[]");
+      for(i=0;i<cashName.length;i++) {
+        cashName[i].checked = true;
       }
-  </script> --}}
+    }
+    function cashAlllift() {
+      var cashName = document.getElementsByName("cash_no[]");
+      for(i=0;i<cashName.length;i++) {
+        cashName[i].checked = false;
+      }
+    }
+  </script>
 @endpush
 
 @section('contents')
@@ -34,76 +44,70 @@
               {{ csrf_field() }}
               <div id="searchForm">
         
-                <table id="customer-table1">
-        
-                  <tbody id="customer-tbody">
-        
-                    
+                <table id="search_table">
 
-                    <tr id="customer_addline1" style="">
-                        <td align="left" class="tab_input_collmn_score_a">購入日付</td>
-                        <td class="chgct1">
-                          <input id="f1getd_p" type="checkbox" name="period" value="" class="f1GetDate">期間
-                          <input id="f1getd_From_p" disabled="disabled" class="datepicker" type="text" name="f1_get_date_From_period" value="" maxlength="10" autocomplete="off" pattern="^\d{4}-\d{2}-\d{2}$">
+                  <tbody>
+        
+                    <tr id="" style="">
+                        <td class="itemName">購入日付</td>
+                        <td class="">
+                          <input class="formText" type="date" name="purcDate_From" value="">
                            ～
-                          <input id="f1getd_To_p" disabled="disabled" class="datepicker" type="text" name="f1_get_date_To_period" value="" maxlength="10" autocomplete="off" pattern="^\d{4}-\d{2}-\d{2}$">
-                          <span class="form_example">(例)2022-01-01 ～ 2022-12-31</span>
-
+                          <input class="formText" type="date" name="purcDate_To" value="">
+ 
                         </td>
                     </tr>
 
-                    <tr id="customer_addline1" style="">
-                        <td align="left" class="tab_input_collmn_score_a">製品名</td>
-                        <td class="chgct1">
-                          <input id="lf_name_kana" type="text" name="lf_name_kana" value="" onchange="inputChange();">  を含む
+                    <tr id="" style="">
+                        <td class="itemName">製品名</td>
+                        <td class="">
+                          <input class="formText" type="text" name="product_name" value="">  を含む
                         </td>
                     </tr>
 
-                    <tr id="customer_addline2" style="">
-                        <td align="left" class="tab_input_collmn_score_a">カテゴリー</td>
+                    <tr id="" style="">
+                        <td class="itemName">カテゴリー</td>
           
-                        <td class="chgct1" >
+                        <td class="" >
           
-                          <div id="shopSelect">
+                          <div id="checkSelect">
                             @foreach($product_details as $row => $productKind)
-                              <label>
-                                <input id="shop_name" class="ck_shopList" type="checkbox" value="{{ $productKind->product_no }}" name="shop_name[]">{{ $productKind->product_kind }}
-                              </label>
+                                <label>
+                                   <input type="checkbox" value="{{ $productKind->product_no }}" name="product_no[]">{{ $productKind->product_kind }}
+                                </label>
                             @endforeach
                           </div>
                           
-                          <button type="button" class="jmodal-button" style="font-weight:bold;font-size:11px;margin:10px;" onclick="shopAllselect()" value="">全選択</button>
-                          <button type="button" class="jmodal-button" style="font-weight:bold;font-size:11px;margin:10px;" onclick="shopAlllift()" value="">全解除</button>
+                          <button type="button" class="regist_btn" onclick="proAllselect()" value="">全選択</button>
+                          <button type="button" class="regist_btn" onclick="proAlllift()" value="">全解除</button>
                         </td>
                     </tr>
 
-                    <tr id="customer_addline1" style="">
-                        <td align="left" class="tab_input_collmn_score_a">値段</td>
-                        <td class="chgct1">
-                          <input id="f1getd_p" type="checkbox" name="period" value="" class="f1GetDate">期間
-                          <input id="f1getd_From_p" disabled="disabled" class="datepicker" type="text" name="f1_get_date_From_period" value="" maxlength="10" autocomplete="off" pattern="^\d{4}-\d{2}-\d{2}$">
+                    <tr id="" style="">
+                        <td class="itemName">値段</td>
+                        <td class="">
+                          <input class="formText" type="number" min="0" name="price_From" value="">
                            ～
-                          <input id="f1getd_To_p" disabled="disabled" class="datepicker" type="text" name="f1_get_date_To_period" value="" maxlength="10" autocomplete="off" pattern="^\d{4}-\d{2}-\d{2}$">
-                          <span class="form_example">(例)2022-01-01 ～ 2022-12-31</span>
+                          <input class="formText" type="number" min="0" name="price_To" value="">
 
                         </td>
                     </tr>
 
-                    <tr id="customer_addline2" style="">
-                        <td align="left" class="tab_input_collmn_score_a">支払方法</td>
+                    <tr id="" style="">
+                        <td class="itemName">支払方法</td>
           
-                        <td class="chgct1" >
+                        <td class="" >
           
-                          <div id="shopSelect">
+                          <div id="checkSelect">
                             @foreach($cash_details as $row => $cashKind)
-                              <label>
-                                <input id="shop_name" class="ck_shopList" type="checkbox" value="{{ $cashKind->cash_no }}" name="shop_name[]">{{ $cashKind->cash_kind }}
-                              </label>
+                                <label>
+                                   <input type="checkbox" value="{{ $cashKind->cash_no }}" name="cash_no[]">{{ $cashKind->cash_kind }}
+                                </label>
                             @endforeach
                           </div>
                           
-                          <button type="button" class="jmodal-button" style="font-weight:bold;font-size:11px;margin:10px;" onclick="shopAllselect()" value="">全選択</button>
-                          <button type="button" class="jmodal-button" style="font-weight:bold;font-size:11px;margin:10px;" onclick="shopAlllift()" value="">全解除</button>
+                          <button type="button" class="regist_btn" onclick="cashAllselect()" value="">全選択</button>
+                          <button type="button" class="regist_btn" onclick="cashAlllift()" value="">全解除</button>
                         </td>
                     </tr>
                     
@@ -136,7 +140,5 @@
 
 <!-- TODO -->
 <!--
-経過日数
-ペジネーション
-今月/先月btn
+選択肢CSS（product/cash）
 -->
