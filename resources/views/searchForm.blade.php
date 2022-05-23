@@ -40,8 +40,10 @@
 
         <div id="mainArea">
             
-            <form method="POST" action="/customer" id="mainform">
+            <form method="POST" action="/search/result" id="mainform">
               {{ csrf_field() }}
+              @csrf
+
               <div id="searchForm">
         
                 <table id="search_table">
@@ -63,7 +65,7 @@
                         <td class="">
                             年：
                             <select type="text" name="purcYear" class="formText">
-                                <option>選択して下さい</option>
+                                <option value="">選択して下さい</option>
                                 <option value="2018">2018</option>
                                 <option value="2019">2019</option>
                                 <option value="2020">2020</option>
@@ -79,7 +81,7 @@
 
                             <span style="margin-left:30px;">月：</span>
                             <select type="text" name="purcMonth" class="formText">
-                                <option>選択して下さい</option>
+                                <option value="">選択して下さい</option>
                                 <option value="1">1月</option>
                                 <option value="2">2月</option>
                                 <option value="3">3月</option>

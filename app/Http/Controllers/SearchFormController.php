@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Models\Purchasehistory;
+use Carbon\Carbon;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Log;
 
 class SearchFormController extends Controller
@@ -50,9 +52,9 @@ class SearchFormController extends Controller
 
     public static $InClauseKeyValue = [
         // カテゴリー
-        'product_no' => ['column' => 'product_kind', 'type' => 'in_clause', 'table' => 'purchasehistories'],
+        'product_no' => ['column' => 'proDet.product_no', 'type' => 'in_clause', 'table' => 'purchasehistories'],
         // 支払方法
-        'cash_no' => ['column' => 'cash_no', 'type' => 'in_clause', 'table' => 'purchasehistories'],
+        'cash_no' => ['column' => 'cashDet.cash_no', 'type' => 'in_clause', 'table' => 'purchasehistories'],
 
     ];
 
@@ -63,7 +65,7 @@ class SearchFormController extends Controller
         'purcMonth' => ['column' => 'purchase_date', 'fromtoType' => 'FROM', 'table' => 'purchasehistories'],
     ];
 
-    public function result(Request $request)
+    public function searchResult(Request $request)
     {
         // ini_setでタイムアウト上限値を更新
         ini_set("max_execution_time", 300);
@@ -78,7 +80,7 @@ class SearchFormController extends Controller
         Log::debug(__LINE__ . " reqAllArr is  " . print_r($reqAllArr, true));
 
         if (!array_key_exists('page', $reqAllArr) || (!session()->has('wherestr') && !session()->has('fromstr'))) {
-            list($fromStr, $WhereStr) = $this->makeFromAndWhere($reqAllArr);
+            list($fromStr, $WhereStr) = $this->makeWhereAndFrom($reqAllArr);
             session()->put(['fromstr' => $fromStr, 'wherestr' => $WhereStr]);
         } else {
             $fromStr = session()->get('fromstr');
@@ -108,7 +110,7 @@ class SearchFormController extends Controller
 
 
         //件数の値
-        $countQuery = "SELECT COUNT(cusInfo.customer_id) as count ";
+        $countQuery = "SELECT COUNT(purchase_no) as count ";
         $countQuery .= $fromStr;
         if($WhereStr == ""){
             $countQuery .= $WhereStr;
@@ -127,12 +129,14 @@ class SearchFormController extends Controller
         $InsuranceFlg = "";
 
         $searchQuery = "SELECT
-                        purchase_date as purchase_date,
-                        price as price,
-                        product_name as product_name,
-                        product_kind as product_kind,
-                        cash_no as cash_no ";
-
+                        pucHis.purchase_no as purchase_no,
+                        pucHis.purchase_date as purchase_date,
+                        pucHis.price as price,
+                        pucHis.product_name as product_name,
+                        proDet.product_no as product_no,
+                        proDet.product_kind as product_kind,
+                        cashDet.cash_no as cash_no,
+                        cashDet.cash_kind as cash_kind ";
         $searchQuery .= $fromStr;
 
         if($WhereStr == ""){
@@ -142,7 +146,7 @@ class SearchFormController extends Controller
             $searchQuery .= " WHERE " . $WhereStr;
         }
 
-        $searchQuery .= " ORDER BY purchase_date ASC ";
+        $searchQuery .= " ORDER BY purchase_date DESC ";
         $searchQuery .= " LIMIT " . $lastn . " OFFSET " . $offsetNum;
 
         Log::debug(__LINE__ . " Query " . print_r($searchQuery, true));
@@ -168,15 +172,15 @@ class SearchFormController extends Controller
         $csvExSessWhere = session()->get('whereStr');
 
         // paginate設定
-        $paginate = new LengthAwarePaginator(
-            $queryResults, //表示する配列
-            $countval, //総数
-            $lastn, //表示件数
-            $nowPage,  //現在のページNo.
-            array('path' => $request->url()) //URL
-        );
+        // $paginate = new LengthAwarePaginator(
+        //     $queryResults, //表示する配列
+        //     $countval, //総数
+        //     $lastn, //表示件数
+        //     $nowPage,  //現在のページNo.
+        //     array('path' => $request->url()) //URL
+        // );
 
-        return view('customer')->with([
+        return view('searchResult')->with([
             "queryResults" => $queryResults,
             "countval" => $countval,
             "lastn" => $lastn,
@@ -185,7 +189,7 @@ class SearchFormController extends Controller
             "InsExpDateFlg" => $InsExpDateFlg,
             "CarCalesFlg" => $CarCalesFlg,
             "InsuranceFlg" => $InsuranceFlg,
-            "paginate" => $paginate,
+            // "paginate" => $paginate,
             "displayNumFrom" => $displayNumFrom,
             "displayNumTo" => $displayNumTo,
             'WhereStr', $request->session()->get('WhereStr'),
@@ -200,7 +204,7 @@ class SearchFormController extends Controller
     // // proDet  `product_details` as proDet
     // // cashDet  `cash_details` as cashDet
 
-    private function makeFromAndWhere($reqAllArr)
+    private function makeWhereAndFrom($reqAllArr)
     {
 
         $WhereStr = "";
@@ -225,13 +229,13 @@ class SearchFormController extends Controller
 
             // likeKeyValue
             if (array_key_exists($key, self::$likeKeyValue)) {
+
                 if ($WhereStr != "") {
                     $WhereStr .= " AND ";
                 }
 
                 if ($key == 'product_name') {
-                    $part = '1';
-                    $WhereStr .= $this->makeLikeKeyValueWheresStr($reqEditArr, self::$likeKeyValue[$key]['column'], $part, 'lf_name_kana');
+                    $WhereStr .= $this->makeLikeKey($reqEditArr, self::$likeKeyValue[$key]['column'], 'product_name');
                     unset($reqAllArr['product_name']);
                 }
             }
@@ -243,11 +247,11 @@ class SearchFormController extends Controller
                     $WhereStr .= " AND ";
                 }
                 if ($key == 'product_no') {
-                    $WhereStr .= $this->makeInClauseWheresStr($reqEditArr, self::$InClauseKeyValue[$key]['column'], 'product_no');
+                    $WhereStr .= $this->makeIncStr($reqEditArr, self::$InClauseKeyValue[$key]['column'], 'product_no');
                     unset($reqAllArr->product_no);
                 }
                 if ($key == 'cash_no') {
-                    $WhereStr .= $this->makeInClauseWheresStr($reqEditArr, self::$InClauseKeyValue[$key]['column'], 'cash_no');
+                    $WhereStr .= $this->makeIncStr($reqEditArr, self::$InClauseKeyValue[$key]['column'], 'cash_no');
                     unset($reqAllArr->cash_no);
                 }
             }
@@ -255,20 +259,17 @@ class SearchFormController extends Controller
             // betweenkeyValue
             if (array_key_exists($key, self::$betweenKeyValue) && array_key_exists($key, $reqEditArr)) {
 
-                $exi = '0';
-
                 if ($WhereStr != "") {
                     $WhereStr .= " AND ";
                 }
 
-                //for_MIC
                 if (($key == 'purcDate_From' || $key == 'purcDate_To')) {
-                    $WhereStr .= $this->makeFromToWheresStr($reqEditArr, self::$betweenKeyValue[$key]['column'], 'purcDate_From', 'purcDate_To', $exi);
+                    $WhereStr .= $this->makeBetweenStr($reqEditArr, self::$betweenKeyValue[$key]['column'], 'purcDate_From', 'purcDate_To');
                     unset($reqEditArr['purcDate_From'], $reqEditArr['purcDate_To']);
                 }
 
                 if (($key == 'price_From' || $key == 'price_To')) {
-                    $WhereStr .= $this->makeFromToWheresStr($reqEditArr, self::$betweenKeyValue[$key]['column'], 'price_From', 'price_To', $exi);
+                    $WhereStr .= $this->makeBetweenStr($reqEditArr, self::$betweenKeyValue[$key]['column'], 'price_From', 'price_To');
                     unset($reqEditArr['price_From'], $reqEditArr['price_To']);
                 }
 
@@ -277,25 +278,23 @@ class SearchFormController extends Controller
             // $INTERKeyValue
             if (array_key_exists($key, self::$INTERKeyValue) && array_key_exists($key, $reqEditArr)) {
 
-                $exi = '0';
-
                 if ($WhereStr != "") {
                     $WhereStr .= " AND ";
                 }
 
                 if (($key == 'purcYear' || $key == 'purcMonth')) {
-                    $WhereStr .= $this->makeInterFromToWheresStr($reqEditArr, self::$INTERKeyValue[$key]['column'], 'purcYear', 'purcMonth', $exi);
+                    $WhereStr .= $this->makeInterStr($reqEditArr, self::$INTERKeyValue[$key]['column'], 'purcYear', 'purcMonth');
                     unset($reqEditArr['purcYear'], $reqEditArr['purcMonth']);
                 }
 
             }
         }
 
-        //FROM句
-        $FromStr .= "`purchasehistories` as pucHis";
-        $FromStr .= " LEFT JOIN `product_details` as proDet ";
-        $FromStr .= " ON pucHis.product_kind = proDet.cash_no ";
-        $FromStr .= " LEFT JOIN `cash_details` as cashDet ";
+        //FROM
+        $FromStr .= "`purchasehistories` as `pucHis`";
+        $FromStr .= " LEFT JOIN `product_details` as `proDet` ";
+        $FromStr .= " ON pucHis.product_kind = proDet.product_no ";
+        $FromStr .= " LEFT JOIN `cash_details` as `cashDet` ";
         $FromStr .= " ON pucHis.cash_kind = cashDet.cash_no ";
         
         Log::debug(__LINE__ . " FromStr is " . print_r($FromStr, true));
@@ -309,8 +308,8 @@ class SearchFormController extends Controller
         return $retArr;
     }
 
-    //LIKE検索
-    private function makeLikeKeyValueWheresStr($reqEditArr, $columnName, $part, $likeKeyValue)
+    //LIKE
+    private function makeLikeKey($reqEditArr, $columnName, $likeKeyValue)
     {
         $WhereStr = "";
 
@@ -321,8 +320,8 @@ class SearchFormController extends Controller
         return $WhereStr;
     }
 
-    //リスト検索
-    private function makeInClauseWheresStr($reqEditArr, $columnName, $InClauseKeyval)
+    //InClauseKey
+    private function makeIncStr($reqEditArr, $columnName, $InClauseKeyval)
     {
         $WhereStr = "";
 
@@ -336,8 +335,8 @@ class SearchFormController extends Controller
         return $WhereStr;
     }
 
-    //BETWEEN検索
-    private function makeFromToWheresStr($reqEditArr, $columnName, $fromKeyval, $toKeyval, $exi)
+    //BETWEEN
+    private function makeBetweenStr($reqEditArr, $columnName, $fromKeyval, $toKeyval)
     {
         $WhereStr = "";
         
@@ -351,38 +350,46 @@ class SearchFormController extends Controller
                 $WhereStr .= " <= '" . $reqEditArr[$toKeyval] . "' ";
             }
         }
-        $WhereStr = " $columnName "  .  $WhereStr;
 
-        // if ($exi == '0' || $exi == '1') {
-        // } 
+        $WhereStr = " $columnName "  .  $WhereStr;
 
         return $WhereStr;
     }
 
-    //INTER検索
-    private function makeInterFromToWheresStr($reqEditArr, $columnName, $fromKeyval, $toKeyval, $exi)
+    //INTER
+    private function makeInterStr($reqEditArr, $columnName, $InterFrom , $InterTo)
     {
         $WhereStr = "";
 
-        // $today = Carbon::today('Asia/Tokyo')->toDateString(); //1027
-        // $todaysubMonth = Carbon::today('Asia/Tokyo')->subMonth($reqEditArr[$fromKeyval])->toDateString(); //0927
-        // $todayMonthBefore = Carbon::today('Asia/Tokyo')->subMonth($reqEditArr[$toKeyval])->toDateString(); //0827
-        // $todayaddMonth = Carbon::today('Asia/Tokyo')->addMonth($reqEditArr[$fromKeyval])->toDateString(); //1127
-        // $todayMonthAfter = Carbon::today('Asia/Tokyo')->addMonth($reqEditArr[$toKeyval])->toDateString(); //1227
+        if ($reqEditArr[$InterFrom] != "" && $reqEditArr[$InterTo] != "") {
 
-        if ($reqEditArr[$fromKeyval] != "" && $reqEditArr[$toKeyval] != "") {
+            // Year and Month
+            $firstDayMonth = Carbon::create($reqEditArr[$InterFrom], $reqEditArr[$InterTo], 1)->firstOfMonth()->toDateString();
+            $lastDayMonth = Carbon::create($reqEditArr[$InterFrom], $reqEditArr[$InterTo], 1)->lastOfMonth()->toDateString();
 
-            $WhereStr .=  " BETWEEN '" . $todayaddMonth . "' AND '" . $todayMonthAfter . "' ";
+            $WhereStr .=  " BETWEEN '" . $firstDayMonth . "' AND '" . $lastDayMonth . "' ";
+            
+        } elseif($reqEditArr[$InterFrom] != "" && $reqEditArr[$InterTo] == "") {
 
-        } else {
+            // Only Year
+            $firstDayOfYear = "$reqEditArr[$InterFrom]-01-01";
+            $lastDayOfYear = "$reqEditArr[$InterFrom]-12-31";
 
-            if ($reqEditArr[$fromKeyval] != "") {
-                $WhereStr .=  " BETWEEN '" .  $today . "' AND '" . $todayaddMonth . "' ";
-            }
-            if ($reqEditArr[$toKeyval] != "") {
-                $WhereStr .=  " BETWEEN '" .  $today . "' AND '" . $todayMonthAfter . "' ";
-            }
+            $WhereStr .=  " BETWEEN '" . $firstDayOfYear . "' AND '" . $lastDayOfYear . "' ";
+
+        } elseif($reqEditArr[$InterFrom] == "" && $reqEditArr[$InterTo] != "") {
+
+            // Only Month
+            $today = new Carbon();
+            $thisYear = $today->year;
+            $firstDayYearMonth = Carbon::create($thisYear, $reqEditArr[$InterTo], 1)->firstOfMonth()->toDateString();
+            $lastDayYearMonth = Carbon::create($thisYear, $reqEditArr[$InterTo], 1)->lastOfMonth()->toDateString();
+
+            $WhereStr .=  " BETWEEN '" . $firstDayYearMonth . "' AND '" . $lastDayYearMonth . "' ";
+
         }
+
+        $WhereStr = " $columnName "  .  $WhereStr;
 
         return $WhereStr;
         

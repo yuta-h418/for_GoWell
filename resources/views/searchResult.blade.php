@@ -25,7 +25,7 @@
 
 @section('contents')
     <div id="mainContent">
-        <h1>購入履歴</h1>
+        <h1>購入履歴　検索結果</h1>
 
         <div id="tableContent">
             <table id="purchase_table">
@@ -37,11 +37,10 @@
                         <td>カテゴリー</td>
                         <td>値段</td>
                         <td>支払方法</td>
-                        {{-- <td>経過日数</td> --}}
                         <td>操作</td>
                     </tr>
 
-                    @foreach ($purchasehistory as $row)
+                    @foreach ($queryResults as $row)
                         <tr>
                             <td>
                                 {{ $row->purchase_date }}
@@ -93,11 +92,6 @@
                                 @endif
                             </td>
 
-                            {{-- <td>
-                                {{ $row->purchase_date }}
-                            </td> --}}
-                            <!-- <td>{{ \Carbon\Carbon::now()->format('Y/m/d') }}->diffInMonths({{ $row->purchase_date }})</td> -->
-
                             <td class="center">
                                 <form action="/purchase_history/delete" method="POST" name="Delform" class="operation_btn">
                                     {{ csrf_field() }}
@@ -114,6 +108,7 @@
 
                                 </form>
                             </td>
+
                         </tr>
                     @endforeach
 
@@ -125,10 +120,11 @@
 
 
     {{-- <!-- 購入履歴編集モーダル --> --}}
-    @foreach ($purchasehistory as $editItems)
+
+    {{-- @foreach ($queryResults as $editItems)
 
         <div class="modal-wrapper" id="modal-edit-{{ $editItems->purchase_no }}">
-            {{-- <a href="javascript:void(0);" class="modal-overlay"></a> --}}
+            
             <a href="javascript:void(0);"></a>
             <div class="modal-window" style="height: auto;max-height:90vh;padding-top:0;">
                 
@@ -218,7 +214,8 @@
 
             </div>
         </div>
-    @endforeach
+    @endforeach --}}
+
 @endsection
 
 
