@@ -37,7 +37,7 @@
                 {{ csrf_field() }}
                 @csrf
 
-                <input type="hidden" name="query" value="{{ $searchValue }}">
+                <input type="hidden" name="query" value={{ $searchValue }}>
 
                 <button type="submit" class="EdiDelBtn" onclick="return dlconf()">
                     <a class="a-button">CSV出力</a>

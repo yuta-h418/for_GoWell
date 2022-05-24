@@ -45,14 +45,7 @@ class CSV_DownloadController extends Controller
 
         //リスト 抽出/記述
         $reqall = $request->all();
-        Log::debug(__LINE__." reqall is ".print_r($reqall , true));
-
-        $query = $request->query;
-        Log::debug(__LINE__." query is ".print_r($query , true));
-
-        $searchQuery = Crypt::decryptString($request->query);
-        Log::debug(__LINE__." searchQuery is ".print_r($searchQuery , true));
-
+        $searchQuery = Crypt::decryptString($reqall['query']);
         $queryResults = DB::select($searchQuery);
 
         foreach ($queryResults as $row) {

@@ -149,6 +149,11 @@ class SearchFormController extends Controller
         }
 
         $searchQuery .= " ORDER BY purchase_date DESC ";
+
+        // LIMIT以下を削除して〜
+        $searchValue = Crypt::encryptString($searchQuery);
+        // Log::debug(__LINE__ . " searchValue " . print_r($searchValue, true));
+
         $searchQuery .= " LIMIT " . $lastn . " OFFSET " . $offsetNum;
 
         Log::debug(__LINE__ . " Query " . print_r($searchQuery, true));
@@ -172,12 +177,6 @@ class SearchFormController extends Controller
 
         $csvExSessFrom = session()->get('fromStr');
         $csvExSessWhere = session()->get('whereStr');
-
-        $searchValue = Crypt::encryptString($searchQuery);
-        Log::debug(__LINE__ . " searchValue " . print_r($searchValue, true));
-
-        // $decryptedValue = Crypt::decryptString($searchValue);
-        // Log::debug(__LINE__ . " decryptedValue " . print_r($decryptedValue, true));
 
         // paginate設定
         // $paginate = new LengthAwarePaginator(
