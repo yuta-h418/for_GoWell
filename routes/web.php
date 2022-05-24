@@ -47,8 +47,11 @@ Route::post('/upload/last', 'App\Http\Controllers\PurchaseHistory_uploadControll
 
 //検索
 Route::get('/search/form', 'App\Http\Controllers\SearchFormController@searchForm')->name('search_form');
-// Route::post('/search/form', 'App\Http\Controllers\SearchFormController@searchResult')->name('search_result');
-//検索けっか
+
+//検索結果
 // Route::get('/upload/conf', 'App\Http\Controllers\PurchaseHistory_uploadController@uploadConf')->name('upload_conf');
 Route::get('/search/result', 'App\Http\Controllers\SearchFormController@searchResult')->name('search_result');
 Route::post('/search/result', 'App\Http\Controllers\SearchFormController@searchResult')->name('search_result');
+
+//CSV出力
+Route::post('/search/download', 'App\Http\Controllers\CSV_DownloadController@csvExoprt')->name('search_DL');

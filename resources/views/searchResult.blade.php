@@ -4,28 +4,47 @@
 
 
 @push('script')
-  <script>
-      function delconf(){
-        if(window.confirm('購入履歴を削除しますか？')){
-           return true;
-        }else{
-           return false;
+    <script>
+        function dlconf() {
+            if (window.confirm('検索結果をCSVへ出力しますか？')) {
+                return true;
+            } else {
+                return false;
+            }
         }
-      }
 
-      function editconf(){
-        if(window.confirm('購入履歴を編集しますか？')){
-           return true;
-        }else{
-           return false;
+        function editconf() {
+            if (window.confirm('購入履歴を編集しますか？')) {
+                return true;
+            } else {
+                return false;
+            }
         }
-      }
-  </script>
+    </script>
 @endpush
 
 @section('contents')
     <div id="mainContent">
         <h1>購入履歴　検索結果</h1>
+
+        <div class="dlbtn">
+
+            <button type="button" class="EdiDelBtn">
+                <a href="javascript:history.back()" class="a-button">戻る</a>
+            </button>
+
+            <form action="/search/download" method="POST" name="DLform" class="operation_btn">
+                {{ csrf_field() }}
+                @csrf
+
+                <input type="hidden" name="query" value="{{ $searchValue }}">
+
+                <button type="submit" class="EdiDelBtn" onclick="return dlconf()">
+                    <a class="a-button">CSV出力</a>
+                </button>
+
+            </form>
+        </div>
 
         <div id="tableContent">
             <table id="purchase_table">
@@ -95,9 +114,10 @@
                             <td class="center">
                                 <form action="/purchase_history/delete" method="POST" name="Delform" class="operation_btn">
                                     {{ csrf_field() }}
+                                    @csrf
 
                                     <input type="hidden" name="del_no" value="{{ $row->purchase_no }}">
-                                    
+
                                     <button type="button" class="EdiDelBtn">
                                         <a href="#modal-edit-{{ $row->purchase_no }}" class="a-button">Edit</a>
                                     </button>
@@ -166,8 +186,8 @@
                                         
                                         <select type="text" name="product_kind" class="formText" require>
                                             <option>選択して下さい</option>
-                                            @foreach($productDetails as $pd)
-                                                <option value="{{ $pd->product_no }}" @if($editItems->product_no == $pd->product_no) selected @endif>{{ $pd->product_kind }}</option>
+                                            @foreach ($productDetails as $pd)
+                                                <option value="{{ $pd->product_no }}" @if ($editItems->product_no == $pd->product_no) selected @endif>{{ $pd->product_kind }}</option>
                                             @endforeach
                                         </select>
                                     </td>
@@ -189,8 +209,8 @@
                                     <td>
                                         <select type="text" name="cash_kind" class="formText" require>
                                             <option>選択して下さい</option>
-                                            @foreach($cashDetails as $cd)
-                                                <option value="{{ $cd->cash_no }}" @if($editItems->cash_no == $cd->cash_no) selected @endif>{{ $cd->cash_kind }}</option>
+                                            @foreach ($cashDetails as $cd)
+                                                <option value="{{ $cd->cash_no }}" @if ($editItems->cash_no == $cd->cash_no) selected @endif>{{ $cd->cash_kind }}</option>
                                             @endforeach
                                         </select>
                                     </td>
@@ -215,7 +235,6 @@
             </div>
         </div>
     @endforeach --}}
-
 @endsection
 
 

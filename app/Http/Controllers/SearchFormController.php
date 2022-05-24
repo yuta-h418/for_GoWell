@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\DB;
 use App\Models\Purchasehistory;
 use Carbon\Carbon;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Log;
 
 class SearchFormController extends Controller
@@ -58,7 +59,7 @@ class SearchFormController extends Controller
         'price_To' => ['column' => 'price', 'fromtoType' => 'TO', 'table' => 'purchasehistories'],
 
     ];
-    
+
     public static $INTERKeyValue = [
         // 購入月:年
         'purcYear' => ['column' => 'purchase_date', 'fromtoType' => 'FROM', 'table' => 'purchasehistories'],
@@ -172,6 +173,12 @@ class SearchFormController extends Controller
         $csvExSessFrom = session()->get('fromStr');
         $csvExSessWhere = session()->get('whereStr');
 
+        $searchValue = Crypt::encryptString($searchQuery);
+        Log::debug(__LINE__ . " searchValue " . print_r($searchValue, true));
+
+        // $decryptedValue = Crypt::decryptString($searchValue);
+        // Log::debug(__LINE__ . " decryptedValue " . print_r($decryptedValue, true));
+
         // paginate設定
         // $paginate = new LengthAwarePaginator(
         //     $queryResults, //表示する配列
@@ -187,6 +194,7 @@ class SearchFormController extends Controller
             "lastn" => $lastn,
             "queryStr" => "",
             "searchQuery" => $searchQuery,
+            "searchValue" => $searchValue,
             "InsExpDateFlg" => $InsExpDateFlg,
             "CarCalesFlg" => $CarCalesFlg,
             "InsuranceFlg" => $InsuranceFlg,
@@ -209,10 +217,6 @@ class SearchFormController extends Controller
     {
 
         $WhereStr = "";
-        $serviceInfo_flg = 0;
-        $PosInfo_flg = 0;
-        $carSalesInfo_flg = 0;
-        $insurInfo_flg = 0;
         $FromStr = "";
 
         $requestEdit = $requestAll;
