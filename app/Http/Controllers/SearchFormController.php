@@ -36,15 +36,6 @@ class SearchFormController extends Controller
      * 
      */
 
-    public static $betweenKeyValue = [
-        // 購入日付
-        'purcDate_From' => ['column' => 'purchase_date', 'fromtoType' => 'FROM', 'table' => 'purchasehistories'],
-        'purcDate_To' => ['column' => 'purchase_date', 'fromtoType' => 'TO', 'table' => 'purchasehistories'],
-        // 値段
-        'price_From' => ['column' => 'price', 'fromtoType' => 'FROM', 'table' => 'purchasehistories'],
-        'price_To' => ['column' => 'price', 'fromtoType' => 'TO', 'table' => 'purchasehistories'],
-
-    ];
     public static $likeKeyValue = [
         // 製品名
         'product_name' => ['column' => 'product_name', 'type' => 'string_like', 'table' => 'purchasehistories'],
@@ -58,6 +49,16 @@ class SearchFormController extends Controller
 
     ];
 
+    public static $betweenKeyValue = [
+        // 購入日付
+        'purcDate_From' => ['column' => 'purchase_date', 'fromtoType' => 'FROM', 'table' => 'purchasehistories'],
+        'purcDate_To' => ['column' => 'purchase_date', 'fromtoType' => 'TO', 'table' => 'purchasehistories'],
+        // 値段
+        'price_From' => ['column' => 'price', 'fromtoType' => 'FROM', 'table' => 'purchasehistories'],
+        'price_To' => ['column' => 'price', 'fromtoType' => 'TO', 'table' => 'purchasehistories'],
+
+    ];
+    
     public static $INTERKeyValue = [
         // 購入月:年
         'purcYear' => ['column' => 'purchase_date', 'fromtoType' => 'FROM', 'table' => 'purchasehistories'],
@@ -76,11 +77,11 @@ class SearchFormController extends Controller
         $sessionData = session()->all();
         // Log::debug(__LINE__." sessionData is ".print_r($sessionData , true));
 
-        $reqAllArr = $request->all();
-        Log::debug(__LINE__ . " reqAllArr is  " . print_r($reqAllArr, true));
+        $requestAll = $request->all();
+        Log::debug(__LINE__ . " requestAll is  " . print_r($requestAll, true));
 
-        if (!array_key_exists('page', $reqAllArr) || (!session()->has('wherestr') && !session()->has('fromstr'))) {
-            list($fromStr, $WhereStr) = $this->makeWhereAndFrom($reqAllArr);
+        if (!array_key_exists('page', $requestAll) || (!session()->has('wherestr') && !session()->has('fromstr'))) {
+            list($fromStr, $WhereStr) = $this->makeWhereAndFrom($requestAll);
             session()->put(['fromstr' => $fromStr, 'wherestr' => $WhereStr]);
         } else {
             $fromStr = session()->get('fromstr');
@@ -90,16 +91,16 @@ class SearchFormController extends Controller
         // Log::debug(__LINE__ . " WhereStr is  " . print_r($WhereStr, true));
 
         //表示件数の値
-        if (!array_key_exists('page', $reqAllArr) || !session()->has('lastnum')) {
+        if (!array_key_exists('page', $requestAll) || !session()->has('lastnum')) {
             $lastn = 50;
             session()->put(['lastnum' => $lastn]);
         } else {
             $lastn = session()->get('lastnum');
         }
 
-        if (array_key_exists('page', $reqAllArr)) {
-            $offsetNum = ($reqAllArr['page'] - 1) * $lastn;
-            $nowPage = $reqAllArr['page'];
+        if (array_key_exists('page', $requestAll)) {
+            $offsetNum = ($requestAll['page'] - 1) * $lastn;
+            $nowPage = $requestAll['page'];
         } else {
             $offsetNum = 0;
             $nowPage = 1;
@@ -204,7 +205,7 @@ class SearchFormController extends Controller
     // // proDet  `product_details` as proDet
     // // cashDet  `cash_details` as cashDet
 
-    private function makeWhereAndFrom($reqAllArr)
+    private function makeWhereAndFrom($requestAll)
     {
 
         $WhereStr = "";
@@ -214,11 +215,11 @@ class SearchFormController extends Controller
         $insurInfo_flg = 0;
         $FromStr = "";
 
-        $reqEditArr = $reqAllArr;
+        $requestEdit = $requestAll;
 
-        // Log::debug(__LINE__ . " reqAllArr is  " . print_r($reqAllArr, true));
+        // Log::debug(__LINE__ . " requestAll is  " . print_r($requestAll, true));
 
-        foreach ($reqAllArr as $key => $value) {
+        foreach ($requestAll as $key => $value) {
 
             // Log::debug(__LINE__ . " key is  " . print_r($key, true));
             // Log::debug(__LINE__ . " value is  " . print_r($value, true));
@@ -235,8 +236,8 @@ class SearchFormController extends Controller
                 }
 
                 if ($key == 'product_name') {
-                    $WhereStr .= $this->makeLikeKey($reqEditArr, self::$likeKeyValue[$key]['column'], 'product_name');
-                    unset($reqAllArr['product_name']);
+                    $WhereStr .= $this->makeLikeStr($requestEdit, self::$likeKeyValue[$key]['column'], 'product_name');
+                    unset($requestAll['product_name']);
                 }
             }
 
@@ -247,44 +248,44 @@ class SearchFormController extends Controller
                     $WhereStr .= " AND ";
                 }
                 if ($key == 'product_no') {
-                    $WhereStr .= $this->makeIncStr($reqEditArr, self::$InClauseKeyValue[$key]['column'], 'product_no');
-                    unset($reqAllArr->product_no);
+                    $WhereStr .= $this->makeIncStr($requestEdit, self::$InClauseKeyValue[$key]['column'], 'product_no');
+                    unset($requestAll->product_no);
                 }
                 if ($key == 'cash_no') {
-                    $WhereStr .= $this->makeIncStr($reqEditArr, self::$InClauseKeyValue[$key]['column'], 'cash_no');
-                    unset($reqAllArr->cash_no);
+                    $WhereStr .= $this->makeIncStr($requestEdit, self::$InClauseKeyValue[$key]['column'], 'cash_no');
+                    unset($requestAll->cash_no);
                 }
             }
 
             // betweenkeyValue
-            if (array_key_exists($key, self::$betweenKeyValue) && array_key_exists($key, $reqEditArr)) {
+            if (array_key_exists($key, self::$betweenKeyValue) && array_key_exists($key, $requestEdit)) {
 
                 if ($WhereStr != "") {
                     $WhereStr .= " AND ";
                 }
 
                 if (($key == 'purcDate_From' || $key == 'purcDate_To')) {
-                    $WhereStr .= $this->makeBetweenStr($reqEditArr, self::$betweenKeyValue[$key]['column'], 'purcDate_From', 'purcDate_To');
-                    unset($reqEditArr['purcDate_From'], $reqEditArr['purcDate_To']);
+                    $WhereStr .= $this->makeBetweenStr($requestEdit, self::$betweenKeyValue[$key]['column'], 'purcDate_From', 'purcDate_To');
+                    unset($requestEdit['purcDate_From'], $requestEdit['purcDate_To']);
                 }
 
                 if (($key == 'price_From' || $key == 'price_To')) {
-                    $WhereStr .= $this->makeBetweenStr($reqEditArr, self::$betweenKeyValue[$key]['column'], 'price_From', 'price_To');
-                    unset($reqEditArr['price_From'], $reqEditArr['price_To']);
+                    $WhereStr .= $this->makeBetweenStr($requestEdit, self::$betweenKeyValue[$key]['column'], 'price_From', 'price_To');
+                    unset($requestEdit['price_From'], $requestEdit['price_To']);
                 }
 
             }
 
             // $INTERKeyValue
-            if (array_key_exists($key, self::$INTERKeyValue) && array_key_exists($key, $reqEditArr)) {
+            if (array_key_exists($key, self::$INTERKeyValue) && array_key_exists($key, $requestEdit)) {
 
                 if ($WhereStr != "") {
                     $WhereStr .= " AND ";
                 }
 
                 if (($key == 'purcYear' || $key == 'purcMonth')) {
-                    $WhereStr .= $this->makeInterStr($reqEditArr, self::$INTERKeyValue[$key]['column'], 'purcYear', 'purcMonth');
-                    unset($reqEditArr['purcYear'], $reqEditArr['purcMonth']);
+                    $WhereStr .= $this->makeInterStr($requestEdit, self::$INTERKeyValue[$key]['column'], 'purcYear', 'purcMonth');
+                    unset($requestEdit['purcYear'], $requestEdit['purcMonth']);
                 }
 
             }
@@ -309,11 +310,11 @@ class SearchFormController extends Controller
     }
 
     //LIKE
-    private function makeLikeKey($reqEditArr, $columnName, $likeKeyValue)
+    private function makeLikeStr($requestEdit, $columnName, $likeKeyValue)
     {
         $WhereStr = "";
 
-        $WhereStr .=  " " . $columnName . " LIKE '%" . $reqEditArr[$likeKeyValue] . "%' ";
+        $WhereStr .=  " " . $columnName . " LIKE '%" . $requestEdit[$likeKeyValue] . "%' ";
 
         // Log::debug(__LINE__ . " key is " . print_r($part, true));
 
@@ -321,12 +322,12 @@ class SearchFormController extends Controller
     }
 
     //InClauseKey
-    private function makeIncStr($reqEditArr, $columnName, $InClauseKeyval)
+    private function makeIncStr($requestEdit, $columnName, $InClauseKeyval)
     {
         $WhereStr = "";
 
-        if ($reqEditArr[$InClauseKeyval] != "") {
-            $InClause = implode("','", $reqEditArr[$InClauseKeyval]);
+        if ($requestEdit[$InClauseKeyval] != "") {
+            $InClause = implode("','", $requestEdit[$InClauseKeyval]);
             $WhereStr .= $columnName . " IN ('$InClause') ";
         }
 
@@ -336,18 +337,18 @@ class SearchFormController extends Controller
     }
 
     //BETWEEN
-    private function makeBetweenStr($reqEditArr, $columnName, $fromKeyval, $toKeyval)
+    private function makeBetweenStr($requestEdit, $columnName, $fromKeyval, $toKeyval)
     {
         $WhereStr = "";
         
-        if ($reqEditArr[$fromKeyval] != "" && $reqEditArr[$toKeyval] != "") {
-            $WhereStr .=  " BETWEEN '" .  $reqEditArr[$fromKeyval] . "' AND '" . $reqEditArr[$toKeyval] . "' ";
+        if ($requestEdit[$fromKeyval] != "" && $requestEdit[$toKeyval] != "") {
+            $WhereStr .=  " BETWEEN '" .  $requestEdit[$fromKeyval] . "' AND '" . $requestEdit[$toKeyval] . "' ";
         } else {
-            if ($reqEditArr[$fromKeyval] != "") {
-                $WhereStr .= " >= '" . $reqEditArr[$fromKeyval] . "' ";
+            if ($requestEdit[$fromKeyval] != "") {
+                $WhereStr .= " >= '" . $requestEdit[$fromKeyval] . "' ";
             }
-            if ($reqEditArr[$toKeyval] != "") {
-                $WhereStr .= " <= '" . $reqEditArr[$toKeyval] . "' ";
+            if ($requestEdit[$toKeyval] != "") {
+                $WhereStr .= " <= '" . $requestEdit[$toKeyval] . "' ";
             }
         }
 
@@ -357,33 +358,33 @@ class SearchFormController extends Controller
     }
 
     //INTER
-    private function makeInterStr($reqEditArr, $columnName, $InterFrom , $InterTo)
+    private function makeInterStr($requestEdit, $columnName, $InterFrom , $InterTo)
     {
         $WhereStr = "";
 
-        if ($reqEditArr[$InterFrom] != "" && $reqEditArr[$InterTo] != "") {
+        if ($requestEdit[$InterFrom] != "" && $requestEdit[$InterTo] != "") {
 
             // Year and Month
-            $firstDayMonth = Carbon::create($reqEditArr[$InterFrom], $reqEditArr[$InterTo], 1)->firstOfMonth()->toDateString();
-            $lastDayMonth = Carbon::create($reqEditArr[$InterFrom], $reqEditArr[$InterTo], 1)->lastOfMonth()->toDateString();
+            $firstDayMonth = Carbon::create($requestEdit[$InterFrom], $requestEdit[$InterTo], 1)->firstOfMonth()->toDateString();
+            $lastDayMonth = Carbon::create($requestEdit[$InterFrom], $requestEdit[$InterTo], 1)->lastOfMonth()->toDateString();
 
             $WhereStr .=  " BETWEEN '" . $firstDayMonth . "' AND '" . $lastDayMonth . "' ";
             
-        } elseif($reqEditArr[$InterFrom] != "" && $reqEditArr[$InterTo] == "") {
+        } elseif($requestEdit[$InterFrom] != "" && $requestEdit[$InterTo] == "") {
 
             // Only Year
-            $firstDayOfYear = "$reqEditArr[$InterFrom]-01-01";
-            $lastDayOfYear = "$reqEditArr[$InterFrom]-12-31";
+            $firstDayOfYear = "$requestEdit[$InterFrom]-01-01";
+            $lastDayOfYear = "$requestEdit[$InterFrom]-12-31";
 
             $WhereStr .=  " BETWEEN '" . $firstDayOfYear . "' AND '" . $lastDayOfYear . "' ";
 
-        } elseif($reqEditArr[$InterFrom] == "" && $reqEditArr[$InterTo] != "") {
+        } elseif($requestEdit[$InterFrom] == "" && $requestEdit[$InterTo] != "") {
 
             // Only Month
             $today = new Carbon();
             $thisYear = $today->year;
-            $firstDayYearMonth = Carbon::create($thisYear, $reqEditArr[$InterTo], 1)->firstOfMonth()->toDateString();
-            $lastDayYearMonth = Carbon::create($thisYear, $reqEditArr[$InterTo], 1)->lastOfMonth()->toDateString();
+            $firstDayYearMonth = Carbon::create($thisYear, $requestEdit[$InterTo], 1)->firstOfMonth()->toDateString();
+            $lastDayYearMonth = Carbon::create($thisYear, $requestEdit[$InterTo], 1)->lastOfMonth()->toDateString();
 
             $WhereStr .=  " BETWEEN '" . $firstDayYearMonth . "' AND '" . $lastDayYearMonth . "' ";
 
